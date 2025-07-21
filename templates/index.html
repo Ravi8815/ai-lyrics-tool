@@ -1,0 +1,28 @@
+main.py from flask import Flask, render_template, request
+import random
+
+app = Flask(__name__)
+
+romantic_lyrics = [
+    "तेरी आँखों में ये जो प्यार है, हर ख्वाब अब सच लगता है।",
+    "तू जो मिले तो हर ग़म भुला दूँ, तुझमें ही खुद को पा लूं।"
+]
+
+sad_lyrics = [
+    "तेरे बिना अधूरा हूँ मैं, हर दिन तन्हा सा लगता है।",
+    "तेरी यादें ही मेरा सहारा हैं, दिल बस तुझको ही ढूंढता है।"
+]
+
+@app.route("/", methods=["GET", "POST"])
+def home():
+    lyrics = ""
+    if request.method == "POST":
+        mood = request.form.get("mood")
+        if mood == "romantic":
+            lyrics = random.choice(romantic_lyrics)
+        elif mood == "sad":
+            lyrics = random.choice(sad_lyrics)
+    return render_template("index.html", lyrics=lyrics)
+
+if __name__ == "__main__":
+    app.run(debug=True)
